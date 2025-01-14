@@ -3,7 +3,17 @@ guid: 5e7c3c52745b06d468a3999b5e1251a9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bow_Texture
+    second: {fileID: 2100000, guid: 30077cc1a551435428f07dac3a68a8fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ranger_Texture
+    second: {fileID: 2100000, guid: 4780a8f74dd9c874e8a580db1110b00a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

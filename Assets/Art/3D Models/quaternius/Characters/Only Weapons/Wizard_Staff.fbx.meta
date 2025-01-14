@@ -3,7 +3,12 @@ guid: 78e2665c22ea9164e8736688b930108f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wizard_Staff
+    second: {fileID: 2100000, guid: dd65fb60b6e742a41a3e094c592f6d6d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

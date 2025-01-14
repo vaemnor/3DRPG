@@ -3,7 +3,12 @@ guid: 1100d9767b35fb140b30f754c51109f9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ranger_Bow
+    second: {fileID: 2100000, guid: 30077cc1a551435428f07dac3a68a8fd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

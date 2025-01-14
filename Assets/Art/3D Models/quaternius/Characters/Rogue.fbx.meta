@@ -3,7 +3,17 @@ guid: 628bcbadb48f46c4cb0eeab70bc780a6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rogue_Dagger_Texture
+    second: {fileID: 2100000, guid: 83210c3ecd3a68240b55c366ed123e0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rogue_Texture
+    second: {fileID: 2100000, guid: 6e3048b6a6a587548986a4b6a730f1a4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

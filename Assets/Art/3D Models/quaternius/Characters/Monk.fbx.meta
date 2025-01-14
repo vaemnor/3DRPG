@@ -3,7 +3,12 @@ guid: 5997f1b82a78c7d45af3a72297e1166a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Monk_Texture
+    second: {fileID: 2100000, guid: bd493d66c3596bd4a8d226b72db4db98, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,17 @@ guid: afa96128cfd83554ab3677511ff2b53c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cleric_Staff_Texture
+    second: {fileID: 2100000, guid: fa075360d5f15bd40b377d7d14046e22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cleric_Texture
+    second: {fileID: 2100000, guid: f869eb3cbb33c54438f42af76ff0c485, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

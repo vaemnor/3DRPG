@@ -3,7 +3,17 @@ guid: 1ae15d2aed4de5b4d8804a76c96b8df5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Warrior_Sword_Texture
+    second: {fileID: 2100000, guid: 40fa6fff4433711448b3307391f064b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Warrior_Texture
+    second: {fileID: 2100000, guid: b51da31dda8b810489b613c901576304, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
