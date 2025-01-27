@@ -1183,6 +1183,7 @@ GameObject:
   - component: {fileID: 4028883475928974560}
   - component: {fileID: 4970355934307026141}
   - component: {fileID: 930713608948993335}
+  - component: {fileID: 8890773190471940681}
   m_Layer: 0
   m_Name: Player_Rogue_Hooded
   m_TagString: Untagged
@@ -1284,6 +1285,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &8890773190471940681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053434992511450556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2259431737dc9ab4a8d3724713dd0aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5305394138511229268
 GameObject:
   m_ObjectHideFlags: 0

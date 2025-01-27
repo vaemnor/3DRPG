@@ -22,10 +22,10 @@ public class EnvironmentInitializer : MonoBehaviour
     private void Start()
     {
         currentSpawnLocation = initialSpawnLocation;
-        StartCoroutine(SpawnObjects());
+        SpawnObjects();
     }
 
-    private IEnumerator SpawnObjects()
+    private void SpawnObjects()
     {
         for (int currentRowCount = 0; currentRowCount < rowCount; currentRowCount++)
         {
@@ -42,7 +42,5 @@ public class EnvironmentInitializer : MonoBehaviour
 
             currentSpawnLocation += new Vector3(0f, 0f, spawnDistance);
         }
-
-        yield return null;
     }
 }
