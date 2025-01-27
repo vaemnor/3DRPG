@@ -443,9 +443,9 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 12255af4fa52c27498be1cbcad85f29a, type: 3}
   - {fileID: 919132149155446097, guid: 11ac3c2d87de752409d0303d877887f3, type: 3}
   - {fileID: 919132149155446097, guid: 3b18bac2a8f8901489b567e26a477ac7, type: 3}
-  spawnCountPerRow: 8
-  rowCount: 8
-  initialSpawnLocation: {x: -7, y: 0, z: -7}
+  spawnCountPerRow: 20
+  rowCount: 20
+  initialSpawnLocation: {x: -19, y: 0, z: -19}
   spawnDistance: 2
 --- !u!4 &672870691
 Transform:
