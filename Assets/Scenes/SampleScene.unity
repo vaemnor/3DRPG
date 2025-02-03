@@ -2800,6 +2800,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 819718104}
     m_Modifications:
+    - target: {fileID: -4303732747108912585, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
+      propertyPath: patrolRoute
+      value: 
+      objectReference: {fileID: 585838922}
     - target: {fileID: 716373797337335293, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_Name
       value: Enemy_Skeleton_Warrior
@@ -2810,7 +2814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1141641752770966158, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1141641752770966158, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_LocalPosition.z
