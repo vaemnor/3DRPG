@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
+    private PlayerInput playerInput;
     private Animator animator;
+    private CharacterController characterController;
 
     private enum PlayerState
     {
@@ -25,6 +28,8 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        playerInput = new PlayerInput();
         animator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
     }
 }
