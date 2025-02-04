@@ -7,18 +7,29 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private NavMeshAgent agent;
 
-    [Tooltip("The distance from a destination at which the agent will stop moving.")]
-    [SerializeField] private float agentStoppingDistance = 0f;
+    [Header("Movement Speed")]
+    [Tooltip("The minimum speed at which the agent will move.")]
+    [SerializeField] private float agentMovementSpeedMin = 1f;
+    [Tooltip("The maximum speed at which the agent will move.")]
+    [SerializeField] private float agentMovementSpeedMax = 1f;
 
+    [Header("Patrol Route")]
     [Tooltip("Parent of the navigation objects.")]
     [SerializeField] private Transform patrolRoute;
 
-    [Tooltip("The minimum and maximum duration in seconds at which the agent will idle.")]
+    [Tooltip("Whether the agent patrols in a circle or picks a random destination each time.")]
+    [SerializeField] private bool isRandomPatrol = false;
+
+    [Header("Idle Duration")]
+    [Tooltip("The minimum duration in seconds at which the agent will idle.")]
     [SerializeField] private int idleDurationMin = 1;
+    [Tooltip("The maximum duration in seconds at which the agent will idle.")]
     [SerializeField] private int idleDurationMax = 1;
 
-    [Tooltip("The minimum and maximum duration in seconds at which the agent will patrol.")]
+    [Header("Patrol Duration")]
+    [Tooltip("The minimum duration in seconds at which the agent will patrol.")]
     [SerializeField] private int patrolDurationMin = 1;
+    [Tooltip("The maximum duration in seconds at which the agent will patrol.")]
     [SerializeField] private int patrolDurationMax = 1;
 
     private enum State
@@ -71,6 +82,9 @@ public class EnemyController : MonoBehaviour
         {
             InitializePatrolRoute();
         }
+
+        // Set random movement speed
+        agent.speed = Random.Range(agentMovementSpeedMin, agentMovementSpeedMax);
     }
 
     private void Start()
@@ -86,13 +100,16 @@ public class EnemyController : MonoBehaviour
         {
             destinations[i] = patrolRoute.GetChild(i).position;
         }
+
+        // Set random first destination
+        destinationIndex = Random.Range(0, destinations.Length);
     }
 
     private IEnumerator Idle()
     {
         int idleDuration = Random.Range(idleDurationMin, idleDurationMax + 1);
 
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(idleDuration);
 
         CurrentState = State.Patrol;
     }
@@ -119,13 +136,20 @@ public class EnemyController : MonoBehaviour
             agent.SetDestination(destinations[destinationIndex]);
 
             // Wait until the agent has finished reaching the current destination
-            while (agent.pathPending || agent.remainingDistance > agentStoppingDistance)
+            while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
             {
                 yield return null;
             }
 
             // Move to the next destination
-            destinationIndex = (destinationIndex + 1) % destinations.Length;
+            if (!isRandomPatrol)
+            {
+                destinationIndex = (destinationIndex + 1) % destinations.Length;
+            }
+            else if (isRandomPatrol)
+            {
+                destinationIndex = Random.Range(0, destinations.Length);
+            }
         }
     }
 }
