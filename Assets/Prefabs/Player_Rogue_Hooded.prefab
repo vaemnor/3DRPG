@@ -552,7 +552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4070684233462065713
 Transform:
   m_ObjectHideFlags: 0
@@ -1182,8 +1182,8 @@ GameObject:
   - component: {fileID: 8490650513234494128}
   - component: {fileID: 4028883475928974560}
   - component: {fileID: -852416729772571344}
-  - component: {fileID: 8890773190471940681}
   - component: {fileID: 1649001868910068945}
+  - component: {fileID: 8890773190471940681}
   m_Layer: 0
   m_Name: Player_Rogue_Hooded
   m_TagString: Untagged
@@ -1255,18 +1255,6 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!114 &8890773190471940681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5053434992511450556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2259431737dc9ab4a8d3724713dd0aa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!143 &1649001868910068945
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1286,12 +1274,38 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2.25
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.225
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.125, z: 0}
+  m_SkinWidth: 0.05
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 1.25, z: 0}
+--- !u!114 &8890773190471940681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053434992511450556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2259431737dc9ab4a8d3724713dd0aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 4
+  runSpeed: 8
+  jumpHeight: 4
+  landingDuration: 0.2
+  dodgeDuration: 0.3
+  dodgeDistance: 4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 0.1
+  gravity: 32
+  rotationSpeed: 16
+  isDebugEnabled: 1
+  currentStateText: {fileID: 0}
 --- !u!1 &5305394138511229268
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,7 +1355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7342206899470349322
 Transform:
   m_ObjectHideFlags: 0
@@ -1427,7 +1441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2119297808700615689
 Transform:
   m_ObjectHideFlags: 0
