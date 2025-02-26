@@ -23,7 +23,7 @@ public class WalkState : PlayerState
             return;
         }
 
-        player.Move(player.WalkSpeed);
+        player.Move(player.CalculateMovementDirection(), player.WalkSpeed);
     }
 
     public override void Exit()

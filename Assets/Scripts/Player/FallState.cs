@@ -13,10 +13,12 @@ public class FallState : PlayerState
 
     public override void Update()
     {
-        player.Move(player.WalkSpeed);
-
         verticalVelocity -= player.Gravity * Time.deltaTime;
-        player.CharacterController.Move(new Vector3(0.0f, verticalVelocity * Time.deltaTime, 0.0f));
+
+        Vector3 movementDirection = player.CalculateMovementDirection();
+        movementDirection.y = verticalVelocity;
+
+        player.Move(movementDirection, player.AirHorizontalMovementSpeed);
 
         if (player.IsGrounded())
             stateMachine.ChangeState(new LandState(player, stateMachine));

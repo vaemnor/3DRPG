@@ -1295,6 +1295,7 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 8
   jumpHeight: 4
+  airHorizontalMovementSpeed: 6
   landingDuration: 0.2
   dodgeDuration: 0.3
   dodgeDistance: 4

@@ -16,19 +16,20 @@ public class JumpState : PlayerState
 
     public override void Update()
     {
-        player.Move(player.WalkSpeed);
+        Vector3 movementDirection = player.CalculateMovementDirection();
+        movementDirection.y = verticalVelocity;
+
+        player.Move(movementDirection, player.AirHorizontalMovementSpeed);
     }
 
     private IEnumerator JumpRoutine()
     {
-        while (verticalVelocity > 0.0f) // Jumping upwards
+        while (verticalVelocity > 0.0f)
         {
-            player.CharacterController.Move(new Vector3(0.0f, verticalVelocity * Time.deltaTime, 0.0f));
             verticalVelocity -= player.Gravity * Time.deltaTime;
             yield return null;
         }
 
-        // Transition to Fall State when velocity turns negative (falling)
         stateMachine.ChangeState(new FallState(player, stateMachine));
     }
 

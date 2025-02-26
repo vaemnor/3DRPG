@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpHeight = 1.0f;
+    [SerializeField] private float airHorizontalMovementSpeed = 1.0f;
     [SerializeField] private float landingDuration = 1.0f;
 
     [Header("Dodge Settings")]
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
     public float WalkSpeed => walkSpeed;
     public float RunSpeed => runSpeed;
     public float JumpHeight => jumpHeight;
+    public float AirHorizontalMovementSpeed => airHorizontalMovementSpeed;
     public float LandingDuration => landingDuration;
     public float DodgeDistance => dodgeDistance;
     public float DodgeDuration => dodgeDuration;
@@ -93,11 +95,13 @@ public class PlayerController : MonoBehaviour
             currentStateText.text = $"Current State: {stateMachine.CurrentState}";
     }
 
-    public void Move(float speed)
+    public void Move(Vector3 movementDirection, float movementSpeed)
     {
-        Vector3 moveDirection = CalculateMovementDirection();
-        characterController.Move((moveDirection * speed) * Time.deltaTime);
-        RotateToward(moveDirection);
+        movementDirection.x *= movementSpeed;
+        movementDirection.z *= movementSpeed;
+
+        characterController.Move(movementDirection * Time.deltaTime);
+        RotateToward(new Vector3(movementDirection.x, 0.0f, movementDirection.z));
     }
 
     public Vector3 CalculateMovementDirection()
@@ -116,7 +120,7 @@ public class PlayerController : MonoBehaviour
 
     public void TryJump()
     {
-        if (stateMachine.CurrentState is not JumpState && IsGrounded())
+        if (stateMachine.CurrentState is not JumpState && stateMachine.CurrentState is not DodgeState && IsGrounded())
         {
             stateMachine.ChangeState(new JumpState(this, stateMachine));
         }

@@ -6,6 +6,7 @@ public class DodgeState : PlayerState
     private Vector3 dodgeDirection = Vector3.zero;
     private float dodgeSpeed = 0.0f;
     private float elapsedTime = 0.0f;
+    private float initialYPosition;
 
     public DodgeState(PlayerController player, StateMachine stateMachine) : base(player, stateMachine) { }
 
@@ -15,7 +16,10 @@ public class DodgeState : PlayerState
 
         dodgeDirection = player.CalculateMovementDirection();
         dodgeSpeed = player.DodgeDistance / player.DodgeDuration;
-        
+
+        // Store current Y position to keep constant height during dodge
+        initialYPosition = player.transform.position.y;
+
         player.StartCoroutine(DodgeRoutine());
     }
 
@@ -29,7 +33,11 @@ public class DodgeState : PlayerState
         elapsedTime = 0.0f;
         while (elapsedTime < player.DodgeDuration)
         {
-            player.CharacterController.Move((dodgeDirection * dodgeSpeed) * Time.deltaTime);
+            // Move the player horizontally but maintain initial Y position
+            Vector3 movement = dodgeDirection * dodgeSpeed;
+            movement.y = (initialYPosition - player.transform.position.y) / Time.deltaTime;
+
+            player.CharacterController.Move(movement * Time.deltaTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

@@ -23,7 +23,7 @@ public class RunState : PlayerState
             return;
         }
 
-        player.Move(player.RunSpeed);
+        player.Move(player.CalculateMovementDirection(), player.RunSpeed);
     }
 
     public override void Exit()
