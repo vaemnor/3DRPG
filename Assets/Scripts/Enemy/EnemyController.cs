@@ -4,6 +4,8 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    private GameObject player;
+
     private Animator animator;
     private NavMeshAgent agent;
 
@@ -32,7 +34,12 @@ public class EnemyController : MonoBehaviour
     [Tooltip("The maximum duration in seconds at which the agent will patrol.")]
     [SerializeField] private int patrolDurationMax = 1;
 
-    private enum State
+
+    [Header("Patrol Duration")]
+    [Tooltip("The player tag.")]
+    [SerializeField] private string playerTag = "Player";
+
+    public enum EnemyState
     {
         Idle,
         Patrol,
@@ -40,9 +47,9 @@ public class EnemyController : MonoBehaviour
         Attack
     }
 
-    private State currentState;
+    private EnemyState currentState;
 
-    private State CurrentState
+    public EnemyState CurrentState
     {
         get { return currentState; }
 
@@ -52,14 +59,19 @@ public class EnemyController : MonoBehaviour
 
             switch (currentState)
             {
-                case State.Idle:
+                case EnemyState.Idle:
                     agent.isStopped = true;
                     StartCoroutine(Idle());
                     animator.SetTrigger("Idle");
                     break;
-                case State.Patrol:
+                case EnemyState.Patrol:
                     agent.isStopped = false;
                     StartCoroutine(StartPatrolAndSetPatrolDuration());
+                    animator.SetTrigger("Walk");
+                    break;
+                case EnemyState.Chase:
+                    agent.isStopped = false;
+                    StartCoroutine(ChasePlayer());
                     animator.SetTrigger("Walk");
                     break;
                 default:
@@ -75,6 +87,8 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag(playerTag);
+
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -89,7 +103,14 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        CurrentState = State.Patrol;
+        ChangeState(EnemyState.Patrol);
+    }
+
+    public void ChangeState(EnemyState enemyState)
+    {
+        StopAllCoroutines();
+
+        CurrentState = enemyState;
     }
 
     private void InitializePatrolRoute()
@@ -111,7 +132,7 @@ public class EnemyController : MonoBehaviour
 
         yield return new WaitForSeconds(idleDuration);
 
-        CurrentState = State.Patrol;
+        ChangeState(EnemyState.Patrol);
     }
 
     private IEnumerator StartPatrolAndSetPatrolDuration()
@@ -126,7 +147,7 @@ public class EnemyController : MonoBehaviour
         patrolCoroutine = null;
 
         // After patrol duration is over, switch to Idle
-        CurrentState = State.Idle;
+        ChangeState(EnemyState.Idle);
     }
 
     private IEnumerator LoopThroughPatrolRoute()
@@ -150,6 +171,15 @@ public class EnemyController : MonoBehaviour
             {
                 destinationIndex = Random.Range(0, destinations.Length);
             }
+        }
+    }
+
+    private IEnumerator ChasePlayer()
+    {
+        while (true)
+        {
+            agent.SetDestination(player.transform.position);
+            yield return null;
         }
     }
 }
