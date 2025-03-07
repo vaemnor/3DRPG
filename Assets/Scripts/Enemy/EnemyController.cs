@@ -4,8 +4,6 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    private GameObject player;
-
     private Animator animator;
     private NavMeshAgent agent;
 
@@ -33,11 +31,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int patrolDurationMin = 1;
     [Tooltip("The maximum duration in seconds at which the agent will patrol.")]
     [SerializeField] private int patrolDurationMax = 1;
-
-
-    [Header("Patrol Duration")]
-    [Tooltip("The player tag.")]
-    [SerializeField] private string playerTag = "Player";
 
     public enum EnemyState
     {
@@ -72,7 +65,12 @@ public class EnemyController : MonoBehaviour
                 case EnemyState.Chase:
                     agent.isStopped = false;
                     StartCoroutine(ChasePlayer());
-                    animator.SetTrigger("Walk");
+                    animator.SetTrigger("Chase");
+                    break;
+                case EnemyState.Attack:
+                    agent.isStopped = true;
+                    StartCoroutine(AttackPlayer());
+                    animator.SetTrigger("Attack");
                     break;
                 default:
                     break;
@@ -83,12 +81,8 @@ public class EnemyController : MonoBehaviour
     private Vector3[] destinations;
     private int destinationIndex = 0;
 
-    private Coroutine patrolCoroutine;
-
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag(playerTag);
-
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -139,12 +133,9 @@ public class EnemyController : MonoBehaviour
     {
         int patrolDuration = Random.Range(patrolDurationMin, patrolDurationMax + 1);
 
-        patrolCoroutine = StartCoroutine(LoopThroughPatrolRoute());
+        StartCoroutine(LoopThroughPatrolRoute());
 
         yield return new WaitForSeconds(patrolDuration);
-
-        StopCoroutine(patrolCoroutine);
-        patrolCoroutine = null;
 
         // After patrol duration is over, switch to Idle
         ChangeState(EnemyState.Idle);
@@ -178,8 +169,15 @@ public class EnemyController : MonoBehaviour
     {
         while (true)
         {
-            agent.SetDestination(player.transform.position);
+            agent.SetDestination(PlayerController.Instance.transform.position);
             yield return null;
         }
+    }
+
+    private IEnumerator AttackPlayer()
+    {
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
+
+        ChangeState(EnemyState.Chase);
     }
 }

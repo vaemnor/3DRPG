@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class EnemyPlayerDetector : MonoBehaviour
 {
+    private enum DetectorType
+    {
+        Chase,
+        Attack
+    }
+
+    [SerializeField] private DetectorType detectorType;
+
     private EnemyController enemyController;
 
     [SerializeField] private string playerTag = "Player";
@@ -15,7 +23,14 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            enemyController.ChangeState(EnemyController.EnemyState.Chase);
+            if (detectorType == DetectorType.Chase)
+            {
+                enemyController.ChangeState(EnemyController.EnemyState.Chase);
+            }
+            else if (detectorType == DetectorType.Attack)
+            {
+                enemyController.ChangeState(EnemyController.EnemyState.Attack);
+            }
         }
     }
 
@@ -23,7 +38,14 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            enemyController.ChangeState(EnemyController.EnemyState.Idle);
+            if (detectorType == DetectorType.Chase)
+            {
+                enemyController.ChangeState(EnemyController.EnemyState.Idle);
+            }
+            else if (detectorType == DetectorType.Attack)
+            {
+                enemyController.ChangeState(EnemyController.EnemyState.Chase);
+            }
         }
     }
 }
