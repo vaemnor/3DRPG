@@ -3612,7 +3612,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1408560243}
-  - {fileID: 1761510589}
+  - {fileID: 1077485386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &545646470
@@ -3627,6 +3627,10 @@ PrefabInstance:
       propertyPath: patrolRoute
       value: 
       objectReference: {fileID: 585838922}
+    - target: {fileID: -3400279081909888129, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
+      propertyPath: avoidancePriority
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 716373797337335293, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_Name
       value: Enemy_Skeleton_Warrior_3
@@ -6290,6 +6294,69 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 128ba6300c596f94bbe8405e93b35a87, type: 3}
   m_PrefabInstance: {fileID: 1021372665}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1077485385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1077485386}
+  - component: {fileID: 1077485388}
+  - component: {fileID: 1077485387}
+  m_Layer: 3
+  m_Name: GroundCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1077485386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077485385}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100000, y: 100000, z: 100000}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 534642236}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!64 &1077485387
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077485385}
+  m_Material: {fileID: 13400000, guid: 2d6294ba4e28f2e4687b393ca7977e34, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &1077485388
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077485385}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1089651439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10087,6 +10154,10 @@ PrefabInstance:
       propertyPath: patrolRoute
       value: 
       objectReference: {fileID: 585838922}
+    - target: {fileID: -3400279081909888129, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
+      propertyPath: avoidancePriority
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 716373797337335293, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_Name
       value: Enemy_Skeleton_Warrior_4
@@ -10699,59 +10770,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 128ba6300c596f94bbe8405e93b35a87, type: 3}
   m_PrefabInstance: {fileID: 1750840834}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1761510588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1761510589}
-  - component: {fileID: 1761510590}
-  m_Layer: 3
-  m_Name: GroundCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1761510589
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1761510588}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.45, z: 0}
-  m_LocalScale: {x: 100000, y: 1, z: 100000}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 534642236}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1761510590
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1761510588}
-  m_Material: {fileID: 13400000, guid: 2d6294ba4e28f2e4687b393ca7977e34, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1765230521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13318,6 +13336,10 @@ PrefabInstance:
       propertyPath: patrolRoute
       value: 
       objectReference: {fileID: 585838922}
+    - target: {fileID: -3400279081909888129, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
+      propertyPath: avoidancePriority
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 716373797337335293, guid: ec0a023bdbf1bee4cbedd5c6a1645231, type: 3}
       propertyPath: m_Name
       value: Enemy_Skeleton_Warrior_2

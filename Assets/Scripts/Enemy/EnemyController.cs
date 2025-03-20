@@ -2,16 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum EnemyState { Idle, Patrol, Chase, Attack }
+
 public class EnemyController : MonoBehaviour
 {
     private Animator animator;
     private NavMeshAgent agent;
-
+    
     [Header("Movement Speed")]
     [Tooltip("The minimum speed at which the agent will move.")]
-    [SerializeField] private float agentMovementSpeedMin = 1f;
+    [SerializeField] private float agentMovementSpeedMin = 1.0f;
     [Tooltip("The maximum speed at which the agent will move.")]
-    [SerializeField] private float agentMovementSpeedMax = 1f;
+    [SerializeField] private float agentMovementSpeedMax = 1.0f;
 
     [Header("Patrol Route")]
     [Tooltip("Parent of the navigation objects.")]
@@ -32,13 +34,13 @@ public class EnemyController : MonoBehaviour
     [Tooltip("The maximum duration in seconds at which the agent will patrol.")]
     [SerializeField] private int patrolDurationMax = 1;
 
-    public enum EnemyState
-    {
-        Idle,
-        Patrol,
-        Chase,
-        Attack
-    }
+    [Header("Attack Settings")]
+    [Tooltip("The duration in seconds between consecutive attacks.")]
+    [SerializeField] private float attackCooldown = 1.0f;
+    [Tooltip("The attack's animation.")]
+    [SerializeField] private AnimationClip attackAnimation;
+    [Tooltip("The detector that will trigger attacks when the player is within the radius.")]
+    [SerializeField] private EnemyPlayerDetector attackDetector;
 
     private EnemyState currentState;
 
@@ -48,6 +50,10 @@ public class EnemyController : MonoBehaviour
 
         set
         {
+            animator.SetBool("isIdling", false);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isChasing", false);
+
             currentState = value;
 
             switch (currentState)
@@ -55,17 +61,17 @@ public class EnemyController : MonoBehaviour
                 case EnemyState.Idle:
                     agent.isStopped = true;
                     StartCoroutine(Idle());
-                    animator.SetTrigger("Idle");
+                    animator.SetBool("isIdling", true);
                     break;
                 case EnemyState.Patrol:
                     agent.isStopped = false;
                     StartCoroutine(StartPatrolAndSetPatrolDuration());
-                    animator.SetTrigger("Walk");
+                    animator.SetBool("isWalking", true);
                     break;
                 case EnemyState.Chase:
                     agent.isStopped = false;
                     StartCoroutine(ChasePlayer());
-                    animator.SetTrigger("Chase");
+                    animator.SetBool("isChasing", true);
                     break;
                 case EnemyState.Attack:
                     agent.isStopped = true;
@@ -176,8 +182,14 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator AttackPlayer()
     {
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
+        yield return new WaitForSeconds(attackAnimation.length);
+        yield return new WaitForSeconds(attackCooldown);
 
-        ChangeState(EnemyState.Chase);
+        // TODO: Play some kinda animation while waiting
+
+        if (!attackDetector.IsPlayerInsideAttackRadius)
+            ChangeState(EnemyState.Chase);
+        else if (attackDetector.IsPlayerInsideAttackRadius)
+            ChangeState(EnemyState.Attack);
     }
 }

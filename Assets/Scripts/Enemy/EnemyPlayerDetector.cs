@@ -1,18 +1,22 @@
 using UnityEngine;
 
+public enum EnemyPlayerDetectorType { Chase, Attack }
+
 public class EnemyPlayerDetector : MonoBehaviour
 {
-    private enum DetectorType
-    {
-        Chase,
-        Attack
-    }
-
-    [SerializeField] private DetectorType detectorType;
-
     private EnemyController enemyController;
 
+    [SerializeField] private EnemyPlayerDetectorType detectorType = EnemyPlayerDetectorType.Chase;
     [SerializeField] private string playerTag = "Player";
+
+    public EnemyPlayerDetectorType DetectorType
+    {
+        get { return detectorType; }
+        set { detectorType = value; }
+    }
+
+    public bool IsPlayerInsideChaseRadius { get; private set; } = false;
+    public bool IsPlayerInsideAttackRadius { get; private set; } = false;
 
     private void Awake()
     {
@@ -23,13 +27,16 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            if (detectorType == DetectorType.Chase)
+            switch (DetectorType)
             {
-                enemyController.ChangeState(EnemyController.EnemyState.Chase);
-            }
-            else if (detectorType == DetectorType.Attack)
-            {
-                enemyController.ChangeState(EnemyController.EnemyState.Attack);
+                case EnemyPlayerDetectorType.Chase:
+                    IsPlayerInsideChaseRadius = true;
+                    enemyController.ChangeState(EnemyState.Chase);
+                    break;
+                case EnemyPlayerDetectorType.Attack:
+                    IsPlayerInsideAttackRadius = true;
+                    enemyController.ChangeState(EnemyState.Attack);
+                    break;
             }
         }
     }
@@ -38,13 +45,15 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            if (detectorType == DetectorType.Chase)
+            switch (DetectorType)
             {
-                enemyController.ChangeState(EnemyController.EnemyState.Idle);
-            }
-            else if (detectorType == DetectorType.Attack)
-            {
-                enemyController.ChangeState(EnemyController.EnemyState.Chase);
+                case EnemyPlayerDetectorType.Chase:
+                    IsPlayerInsideChaseRadius = false;
+                    enemyController.ChangeState(EnemyState.Idle);
+                    break;
+                case EnemyPlayerDetectorType.Attack:
+                    IsPlayerInsideAttackRadius = false;
+                    break;
             }
         }
     }
