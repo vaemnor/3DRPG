@@ -311,7 +311,7 @@ MonoBehaviour:
   idleDurationMax: 30
   patrolDurationMin: 30
   patrolDurationMax: 90
-  attackCooldown: 1
+  attackCooldown: 4
   attackAnimation: {fileID: 7400000, guid: 80692c0738762114d813c870d1476869, type: 2}
   attackDetector: {fileID: 1547882202450236194}
 --- !u!1 &737212978194055237

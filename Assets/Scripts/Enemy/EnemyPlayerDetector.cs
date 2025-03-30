@@ -9,12 +9,6 @@ public class EnemyPlayerDetector : MonoBehaviour
     [SerializeField] private EnemyPlayerDetectorType detectorType = EnemyPlayerDetectorType.Chase;
     [SerializeField] private string playerTag = "Player";
 
-    public EnemyPlayerDetectorType DetectorType
-    {
-        get { return detectorType; }
-        set { detectorType = value; }
-    }
-
     public bool IsPlayerInsideChaseRadius { get; private set; } = false;
     public bool IsPlayerInsideAttackRadius { get; private set; } = false;
 
@@ -27,7 +21,7 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            switch (DetectorType)
+            switch (detectorType)
             {
                 case EnemyPlayerDetectorType.Chase:
                     IsPlayerInsideChaseRadius = true;
@@ -45,7 +39,7 @@ public class EnemyPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag(playerTag))
         {
-            switch (DetectorType)
+            switch (detectorType)
             {
                 case EnemyPlayerDetectorType.Chase:
                     IsPlayerInsideChaseRadius = false;
