@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dodgeDuration = 1.0f;
     [SerializeField] private float dodgeDistance = 1.0f;
 
+    [Header("Sit Settings")]
+    [SerializeField] private float sitDuration = 1.0f;
+
     [Header("Ground Raycast Settings")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance = 1.0f;
@@ -48,6 +51,7 @@ public class PlayerController : MonoBehaviour
     public float LandingDuration => landingDuration;
     public float DodgeDistance => dodgeDistance;
     public float DodgeDuration => dodgeDuration;
+    public float SitDuration => sitDuration;
     public float Gravity => gravity;
     public float RotationSpeed => rotationSpeed;
 
@@ -67,6 +71,9 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        if (isDebugEnabled)
+            currentStateText.gameObject.SetActive(true);
+
         stateMachine.Initialize(new IdleState(this, stateMachine));
     }
 
@@ -80,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Player.Jump.started += context => TryJump();
         playerInput.Player.Dodge.started += context => TryDodge();
+        playerInput.Player.Sit.started += context => TrySit();
     }
 
     private void OnDisable()
@@ -120,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
     public void TryJump()
     {
-        if (stateMachine.CurrentState is not JumpState && stateMachine.CurrentState is not DodgeState && IsGrounded())
+        if (stateMachine.CurrentState is not JumpState && stateMachine.CurrentState is not FallState && stateMachine.CurrentState is not DodgeState && stateMachine.CurrentState is not SitState && IsGrounded())
         {
             stateMachine.ChangeState(new JumpState(this, stateMachine));
         }
@@ -132,6 +140,19 @@ public class PlayerController : MonoBehaviour
         {
             stateMachine.ChangeState(new DodgeState(this, stateMachine));
         }
+    }
+
+    public void TrySit()
+    {
+        if (stateMachine.CurrentState is IdleState || stateMachine.CurrentState is WalkState || stateMachine.CurrentState is RunState)
+        {
+            stateMachine.ChangeState(new SitState(this, stateMachine));
+        }
+    }
+
+    public void OnSitEndComplete()
+    {
+        stateMachine.ChangeState(new IdleState(this, stateMachine));
     }
 
     public void RotateToward(Vector3 direction)

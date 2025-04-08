@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState { Idle, Patrol, Chase, Attack, WaitForAttack }
+public enum EnemyState { Idle, Patrol, Chase, Attack, CoolDown }
 
 public class EnemyController : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class EnemyController : MonoBehaviour
     [Header("Patrol Route")]
     [Tooltip("Parent of the navigation objects.")]
     [SerializeField] private Transform patrolRoute;
-
     [Tooltip("Whether the agent patrols in a circle or picks a random destination each time.")]
     [SerializeField] private bool isRandomPatrol = false;
 
@@ -35,20 +34,28 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float patrolDurationMax = 1.0f;
 
     [Header("Attack Settings")]
-    [Tooltip("The duration in seconds between consecutive attacks.")]
-    [SerializeField] private float attackCooldown = 1.0f;
     [Tooltip("The attack's animation.")]
     [SerializeField] private AnimationClip attackAnimation;
-    [Tooltip("The detector that will trigger attacks when the player is within the radius.")]
+    [Tooltip("The hitbox that is instantiated upon attacking.")]
+    [SerializeField] private GameObject hitbox;
+    [Tooltip("The speed at which the enemy will rotate toward the player during the attack.")]
+    [SerializeField] private float rotationSpeed = 1.0f;
+    [Tooltip("The minimum duration in seconds at which the agent will wait after an attack to resume patrol.")]
+    [SerializeField] private float cooldownMin = 1.0f;
+    [Tooltip("The maximum duration in seconds at which the agent will wait after an attack to resume patrol.")]
+    [SerializeField] private float cooldownMax = 1.0f;
+
+    [Header("Miscellaneous")]
+    [Tooltip("The detector that will trigger chasing when the player is within the radius.")]
+    [SerializeField] private EnemyPlayerDetector chaseDetector;
+    [Tooltip("The detector that will trigger an attack when the player is within the radius.")]
     [SerializeField] private EnemyPlayerDetector attackDetector;
 
-    private EnemyState currentState;
+    [HideInInspector] public EnemyState currentState;
     private Coroutine currentStateCoroutine;
 
     private Vector3[] destinations;
     private int destinationIndex = 0;
-
-    private bool isAttackReady = true;
 
     private void Awake()
     {
@@ -71,6 +78,8 @@ public class EnemyController : MonoBehaviour
 
     public void ChangeState(EnemyState newState)
     {
+        if (currentState == newState) return;
+
         if (currentStateCoroutine != null)
             StopCoroutine(currentStateCoroutine);
 
@@ -90,8 +99,8 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Attack:
                 currentStateCoroutine = StartCoroutine(AttackPlayer());
                 break;
-            case EnemyState.WaitForAttack:
-                currentStateCoroutine = StartCoroutine(WaitForAttack());
+            case EnemyState.CoolDown:
+                currentStateCoroutine = StartCoroutine(Cooldown());
                 break;
         }
 
@@ -116,11 +125,11 @@ public class EnemyController : MonoBehaviour
         agent.isStopped = true;
 
         float idleDuration = Random.Range(idleDurationMin, idleDurationMax);
-
         yield return new WaitForSeconds(idleDuration);
 
         ChangeState(EnemyState.Patrol);
     }
+
 
     private IEnumerator StartPatrolAndSetPatrolDuration()
     {
@@ -138,7 +147,7 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator LoopThroughPatrolRoute()
     {
-        while (true)
+        while (currentState == EnemyState.Patrol)
         {
             agent.SetDestination(destinations[destinationIndex]);
 
@@ -164,7 +173,7 @@ public class EnemyController : MonoBehaviour
     {
         agent.isStopped = false;
 
-        while (true)
+        while (currentState == EnemyState.Chase)
         {
             agent.SetDestination(PlayerController.Instance.transform.position);
             yield return null;
@@ -175,42 +184,49 @@ public class EnemyController : MonoBehaviour
     {
         agent.isStopped = true;
 
-        StartCoroutine(StartAttackCooldown());
-
-        yield return new WaitForSeconds(attackAnimation.length);
-
-        if (!attackDetector.IsPlayerInsideAttackRadius)
+        float elapsedTime = 0.0f;
+        while (elapsedTime < attackAnimation.length)
         {
-            ChangeState(EnemyState.Chase);
-        }
-        else if (attackDetector.IsPlayerInsideAttackRadius && isAttackReady)
-        {
-            if (!isAttackReady)
-            {
-                ChangeState(EnemyState.WaitForAttack);
-            }
-            else if (isAttackReady)
-            {
-                ChangeState(EnemyState.Attack);
-            }
-        }
-    }
-
-    private IEnumerator StartAttackCooldown()
-    {
-        isAttackReady = false;
-        yield return new WaitForSeconds(attackCooldown);
-        isAttackReady = true;
-    }
-
-    private IEnumerator WaitForAttack()
-    {
-        while (!isAttackReady)
-        {
+            RotateTowardPlayer();
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        ChangeState(EnemyState.Attack);
+        ChangeState(EnemyState.CoolDown);
+    }
+
+    public void RotateTowardPlayer()
+    {
+        Vector3 direction = PlayerController.Instance.transform.position - transform.position;
+        direction.y = 0.0f;
+        direction.Normalize();
+
+        if (direction.sqrMagnitude > 0.0f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        agent.isStopped = true;
+
+        float cooldown = Random.Range(cooldownMin, cooldownMax);
+        yield return new WaitForSeconds(cooldown);
+
+        if (currentState != EnemyState.Attack && attackDetector.IsPlayerInAttackRange)
+            ChangeState(EnemyState.Attack);
+        else if (currentState != EnemyState.Chase && chaseDetector.IsPlayerInChaseRange)
+            ChangeState(EnemyState.Chase);
+        else
+            ChangeState(EnemyState.Patrol);
+    }
+
+    // Called in the attack's animation as an animation event
+    public void InstantiateHitbox()
+    {
+        Instantiate(hitbox, transform);
     }
 
     private void HandleAnimations()
@@ -233,10 +249,8 @@ public class EnemyController : MonoBehaviour
             case EnemyState.Attack:
                 animator.SetTrigger("Attack");
                 break;
-            case EnemyState.WaitForAttack:
+            case EnemyState.CoolDown:
                 animator.SetBool("isIdling", true);
-                break;
-            default:
                 break;
         }
     }

@@ -6,11 +6,13 @@ public class EnemyPlayerDetector : MonoBehaviour
 {
     private EnemyController enemyController;
 
+    [Tooltip("The type of the enemy player detector. If the player is inside the radius of the chase detector type, the enemy will start chasing the player. If the player inside the radius of the attack detector type, the enemy will start an attack.")]
     [SerializeField] private EnemyPlayerDetectorType detectorType = EnemyPlayerDetectorType.Chase;
+    [Tooltip("The tag of the player game object.")]
     [SerializeField] private string playerTag = "Player";
 
-    public bool IsPlayerInsideChaseRadius { get; private set; } = false;
-    public bool IsPlayerInsideAttackRadius { get; private set; } = false;
+    public bool IsPlayerInChaseRange { get; private set; } = false;
+    public bool IsPlayerInAttackRange { get; private set; } = false;
 
     private void Awake()
     {
@@ -24,12 +26,16 @@ public class EnemyPlayerDetector : MonoBehaviour
             switch (detectorType)
             {
                 case EnemyPlayerDetectorType.Chase:
-                    IsPlayerInsideChaseRadius = true;
-                    enemyController.ChangeState(EnemyState.Chase);
+                    IsPlayerInChaseRange = true;
+
+                    if (!(enemyController.currentState == EnemyState.Chase || enemyController.currentState == EnemyState.CoolDown))
+                        enemyController.ChangeState(EnemyState.Chase);
                     break;
                 case EnemyPlayerDetectorType.Attack:
-                    IsPlayerInsideAttackRadius = true;
-                    enemyController.ChangeState(EnemyState.Attack);
+                    IsPlayerInAttackRange = true;
+
+                    if (!(enemyController.currentState == EnemyState.Attack || enemyController.currentState == EnemyState.CoolDown))
+                        enemyController.ChangeState(EnemyState.Attack);
                     break;
             }
         }
@@ -42,11 +48,13 @@ public class EnemyPlayerDetector : MonoBehaviour
             switch (detectorType)
             {
                 case EnemyPlayerDetectorType.Chase:
-                    IsPlayerInsideChaseRadius = false;
-                    enemyController.ChangeState(EnemyState.Idle);
+                    IsPlayerInChaseRange = false;
+
+                    if (enemyController.currentState == EnemyState.Chase)
+                        enemyController.ChangeState(EnemyState.Idle);
                     break;
                 case EnemyPlayerDetectorType.Attack:
-                    IsPlayerInsideAttackRadius = false;
+                    IsPlayerInAttackRange = false;
                     break;
             }
         }

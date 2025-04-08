@@ -6,7 +6,7 @@ public class DodgeState : PlayerState
     private Vector3 dodgeDirection = Vector3.zero;
     private float dodgeSpeed = 0.0f;
     private float elapsedTime = 0.0f;
-    private float initialYPosition;
+    private float initialYPosition = 0.0f;
 
     public DodgeState(PlayerController player, StateMachine stateMachine) : base(player, stateMachine) { }
 
@@ -50,6 +50,7 @@ public class DodgeState : PlayerState
 
     public override void Exit()
     {
+        player.StopCoroutine(DodgeRoutine());
         player.Animator.SetBool("isDodging", false);
     }
 }
