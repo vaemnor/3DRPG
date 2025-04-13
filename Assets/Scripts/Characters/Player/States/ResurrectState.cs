@@ -9,6 +9,7 @@ public class ResurrectState : PlayerState
 
     public override void Exit()
     {
+        player.InitializeHealth();
         player.Animator.ResetTrigger("Resurrect");
     }
 }

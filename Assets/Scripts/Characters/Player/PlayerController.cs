@@ -207,6 +207,11 @@ public class PlayerController : MonoBehaviour
         Instantiate(hitbox, transform);
     }
 
+    public void InitializeHealth()
+    {
+        healthBar.InitializeHealth();
+    }
+
     public void TakeHit(Vector3 attackerPosition, float knockbackDuration, float knockbackSpeed, int damage)
     {
         Vector3 knockbackDirection = (transform.position - attackerPosition).normalized;

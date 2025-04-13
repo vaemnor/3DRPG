@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum HitboxOriginator { Player, Enemy }
@@ -23,6 +24,9 @@ public class Hitbox : MonoBehaviour
     [Tooltip("Tag of the enemy game object.")]
     [SerializeField] private string enemyTag = "Enemy";
 
+    // Tracks what this hitbox has already hit
+    private HashSet<GameObject> alreadyHitObjects = new();
+
     private void Awake()
     {
         StartCoroutine(DestroyHitboxAfterDelay());
@@ -36,22 +40,28 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (alreadyHitObjects.Contains(other.gameObject))
+            return; // Skip if already hit
+
         switch (hitboxOriginator)
         {
             case HitboxOriginator.Player:
                 if (other.CompareTag(enemyTag))
                 {
-                    other.TryGetComponent(out EnemyController enemy);
-                    enemy.TakeHit(PlayerController.Instance.transform.position, knockbackDuration, knockbackSpeed, damage);
+                    if (other.TryGetComponent(out EnemyController enemy))
+                    {
+                        alreadyHitObjects.Add(other.gameObject);
+                        enemy.TakeHit(PlayerController.Instance.transform.position, knockbackDuration, knockbackSpeed, damage);
+                    }
                 }
                 break;
+
             case HitboxOriginator.Enemy:
                 if (other.CompareTag(playerTag))
                 {
+                    alreadyHitObjects.Add(other.gameObject);
                     PlayerController.Instance.TakeHit(transform.position, knockbackDuration, knockbackSpeed, damage);
                 }
-                break;
-            default:
                 break;
         }
     }
