@@ -3,27 +3,27 @@ using UnityEngine;
 public class EnvironmentInitializer : MonoBehaviour
 {
     [Header("General Spawn Settings")]
-    [Tooltip("")]
+    [Tooltip("Number of tiles to spawn per row.")]
     [SerializeField] private int spawnCountPerRow = 0;
-    [Tooltip("")]
+    [Tooltip("Total number of rows of tiles")]
     [SerializeField] private int rowCount = 0;
-    [Tooltip("")]
+    [Tooltip("Starting position for spawning tiles.")]
     [SerializeField] private Vector3 initialSpawnPosition = Vector3.zero;
-    [Tooltip("")]
+    [Tooltip("Distance between each spawned tile.")]
     [SerializeField] private float spawnDistance = 1.0f;
     
     [Header("Ground Spawn Settings")]
-    [Tooltip("")]
+    [Tooltip("Array of ground tile prefabs to spawn.")]
     [SerializeField] private GameObject[] groundPrefabs;
-    [Tooltip("")]
+    [Tooltip("Parent object to organize spawned ground tiles.")]
     [SerializeField] private GameObject groundParent;
 
     [Header("Wall Spawn Settings")]
-    [Tooltip("")]
+    [Tooltip("Array of wall tile prefabs to spawn.")]
     [SerializeField] private GameObject[] wallPrefabs;
-    [Tooltip("")]
+    [Tooltip("Prefab used for wall corners.")]
     [SerializeField] private GameObject wallCornerPrefab;
-    [Tooltip("")]
+    [Tooltip("Parent object to organize spawned wall tiles.")]
     [SerializeField] private GameObject wallsParent;
 
     private void Start()
