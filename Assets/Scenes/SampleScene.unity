@@ -4697,8 +4697,8 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: f2c756f0983e3304fbc52a05de226a32, type: 3}
   groundParent: {fileID: 737670189}
   wallPrefabs:
-  - {fileID: 919132149155446097, guid: 94faf8cb37129e34b823a111a9e22181, type: 3}
-  wallCornerPrefab: {fileID: 919132149155446097, guid: 5458c84028b80a24989ccb5751e9ccfc, type: 3}
+  - {fileID: 8420392011389468973, guid: f5a442403e7d1d240be6cf32cabf239e, type: 3}
+  wallCornerPrefab: {fileID: 2232130565974206830, guid: f116d9a481442eb4f873b2505a1b5544, type: 3}
   wallsParent: {fileID: 1646810663}
 --- !u!1001 &692596379
 PrefabInstance:
