@@ -3,11 +3,11 @@ using UnityEngine;
 public class RandomPropSpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
-    [Tooltip("Array of ground tile prefabs to spawn.")]
+    [Tooltip("Array of prop prefabs to spawn.")]
     [SerializeField] private GameObject[] propPrefabs;
-    [Tooltip("Parent object to organize spawned ground tiles.")]
+    [Tooltip("Parent object to organize spawned props.")]
     [SerializeField] private GameObject propsParent;
-    [Tooltip("Number of tiles to spawn per row.")]
+    [Tooltip("Number of props to spawn per row.")]
     [SerializeField] private int spawnCountPerRow = 0;
     [Tooltip("Total number of rows of tiles")]
     [SerializeField] private int rowCount = 0;
