@@ -96,6 +96,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitboxOriginator: 1
   hitboxLifetime: 0.1
-  damage: 1
+  damage: 10
+  knockbackDuration: 0.4
+  knockbackSpeed: 8
   playerTag: Player
   enemyTag: Enemy

@@ -28,13 +28,13 @@ public class EnemyPlayerDetector : MonoBehaviour
                 case EnemyPlayerDetectorType.Chase:
                     IsPlayerInChaseRange = true;
 
-                    if (!(enemyController.currentState == EnemyState.Chase || enemyController.currentState == EnemyState.CoolDown))
+                    if (!(enemyController.CurrentState == EnemyState.Chase || enemyController.CurrentState == EnemyState.CoolDown || enemyController.CurrentState == EnemyState.Hit || enemyController.CurrentState == EnemyState.Die || enemyController.CurrentState == EnemyState.Resurrect))
                         enemyController.ChangeState(EnemyState.Chase);
                     break;
                 case EnemyPlayerDetectorType.Attack:
                     IsPlayerInAttackRange = true;
 
-                    if (!(enemyController.currentState == EnemyState.Attack || enemyController.currentState == EnemyState.CoolDown))
+                    if (!(enemyController.CurrentState == EnemyState.Attack || enemyController.CurrentState == EnemyState.CoolDown || enemyController.CurrentState == EnemyState.Hit || enemyController.CurrentState == EnemyState.Die || enemyController.CurrentState == EnemyState.Resurrect))
                         enemyController.ChangeState(EnemyState.Attack);
                     break;
             }
@@ -50,7 +50,7 @@ public class EnemyPlayerDetector : MonoBehaviour
                 case EnemyPlayerDetectorType.Chase:
                     IsPlayerInChaseRange = false;
 
-                    if (enemyController.currentState == EnemyState.Chase)
+                    if (enemyController.CurrentState == EnemyState.Chase)
                         enemyController.ChangeState(EnemyState.Idle);
                     break;
                 case EnemyPlayerDetectorType.Attack:

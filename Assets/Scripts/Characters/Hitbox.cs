@@ -5,16 +5,22 @@ public enum HitboxOriginator { Player, Enemy }
 
 public class Hitbox : MonoBehaviour
 {
-    [Tooltip("The type of actor the hit box belongs to.")]
+    [Header("Hitbox Settings")]
+    [Tooltip("Type of actor the hit box belongs to.")]
     [SerializeField] private HitboxOriginator hitboxOriginator = HitboxOriginator.Player;
-    [Tooltip("The duration in seconds after which the hitbox will be destroyed.")]
+    [Tooltip("Duration in seconds after which the hitbox will be destroyed.")]
     [SerializeField] private float hitboxLifetime = 1.0f;
-    [Tooltip("The amount of damage inflicted to the recipient.")]
+    [Tooltip("Amount of damage inflicted to the recipient.")]
     [SerializeField] private int damage = 0;
+    [Tooltip("Duration of the knockback inflicted to the recipient.")]
+    [SerializeField] private float knockbackDuration = 1.0f;
+    [Tooltip("Speed of the knockback inflicted to the recipient.")]
+    [SerializeField] private float knockbackSpeed = 1.0f;
 
-    [Tooltip("The tag of the player game object.")]
+    [Header("Tag Settings")]
+    [Tooltip("Tag of the player game object.")]
     [SerializeField] private string playerTag = "Player";
-    [Tooltip("The tag of the enemy game object.")]
+    [Tooltip("Tag of the enemy game object.")]
     [SerializeField] private string enemyTag = "Enemy";
 
     private void Awake()
@@ -35,13 +41,14 @@ public class Hitbox : MonoBehaviour
             case HitboxOriginator.Player:
                 if (other.CompareTag(enemyTag))
                 {
-                    // hurt the enemy
+                    other.TryGetComponent(out EnemyController enemy);
+                    enemy.TakeHit(PlayerController.Instance.transform.position, knockbackDuration, knockbackSpeed, damage);
                 }
                 break;
             case HitboxOriginator.Enemy:
                 if (other.CompareTag(playerTag))
                 {
-                    // hurt the player
+                    PlayerController.Instance.TakeHit(transform.position, knockbackDuration, knockbackSpeed, damage);
                 }
                 break;
             default:

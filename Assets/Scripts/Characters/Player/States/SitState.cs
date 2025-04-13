@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class SitState : PlayerState
 {
-    private Coroutine sitCoroutine;
+    private Coroutine sitRoutine;
 
     public SitState(PlayerController player, StateMachine stateMachine) : base(player, stateMachine) { }
 
     public override void Enter()
     {
         player.Animator.SetTrigger("Sit_Start");
-        sitCoroutine = player.StartCoroutine(SitRoutine());
+        sitRoutine = player.StartCoroutine(SitRoutine());
     }
 
     public override void Update()
@@ -26,10 +26,10 @@ public class SitState : PlayerState
 
     public override void Exit()
     {
-        if (sitCoroutine != null)
+        if (sitRoutine != null)
         {
-            player.StopCoroutine(sitCoroutine);
-            sitCoroutine = null;
+            player.StopCoroutine(sitRoutine);
+            sitRoutine = null;
         }
 
         player.Animator.ResetTrigger("Sit_Start");
